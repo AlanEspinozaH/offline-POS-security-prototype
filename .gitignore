@@ -1,0 +1,33 @@
+# proyecto java with Maven
+/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+*.log
+*.tmp
+
+
+# NetBeans
+/nbproject/private/
+/build/
+/dist/
+/nbbuild/
+/nbdist/
+
+# Archivos locales / datos
+# Las BD son binarios que generan conflictos feos si varios las modifican.
+*.db
+
+# Hojas de cálculo locales (excel)
+*.ods
+
+# Logs o notas.txt que no es necesario que esten en Github
+errores.txt
+historial.txt
+base_datos.txt
+autocompletar_bd.txt
+arquitectura_ideas.txt
+
+# Basura de SO
+.DS_Store
+Thumbs.db

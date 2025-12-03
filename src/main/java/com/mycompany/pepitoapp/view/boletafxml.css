@@ -1,0 +1,28 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.fondo {
+    -fx-background-color: #172541
+}
+.Botones {
+    -fx-background-color: #192a5b; /* Color de fondo */
+    -fx-border-color: #5ea9ff;
+    -fx-text-fill: white; /* Color del texto */
+    -fx-font-size: 12px; /* Tamaño de la fuente */
+    
+}
+.tabla{
+    -fx-text-fill: black;  
+    -fx-font-family: Sawasdee;
+}
+.celda{
+    -fx-background-color: #EEF6FF; 
+    -fx-font-family: Sawasdee;
+    -fx-font-weight: bold;
+    -fx-text-fill:black;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: #B3D4FF; /* Cambia el color a tu preferencia */
+    -fx-text-fill:blue;
+}

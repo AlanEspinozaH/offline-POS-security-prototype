@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" prefHeight="600.0" prefWidth="800.0" styleClass="fondo" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.pepitoapp.controller.BoletaFXMLController">
+    <stylesheets>
+        <URL value="@boletafxml.css" />
+    </stylesheets>
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1c3268" height="39.0" layoutX="532.0" layoutY="54.0" stroke="#455b93" strokeType="INSIDE" width="200.0" />
+      <Label layoutX="551.0" layoutY="60.0" prefHeight="20.0" prefWidth="180.0" text="R.U.C 0000121" textFill="WHITE">
+         <font>
+            <Font name="Sawasdee" size="17.0" />
+         </font>
+      </Label>
+      <Button fx:id="btnEliminarProducto" layoutX="73.0" layoutY="517.0" mnemonicParsing="false" onAction="#eliminarProducto" prefHeight="39.0" prefWidth="166.0" styleClass="Botones" text="Eliminar producto">
+         <font>
+            <Font name="Sawasdee" size="17.0" />
+         </font></Button>
+      <Button fx:id="btnConfirmarCompra" layoutX="526.0" layoutY="517.0" mnemonicParsing="false" onAction="#confirmarCompra" prefHeight="39.0" prefWidth="180.0" styleClass="Botones" text="Confirmar compra">
+         <font>
+            <Font name="Sawasdee Bold" size="17.0" />
+         </font></Button>
+      <Label layoutX="73.0" layoutY="136.0" text="Señor (es)" textFill="WHITE">
+         <font>
+            <Font name="Sawasdee Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="73.0" layoutY="168.0" text="R.U.C N" textFill="WHITE">
+         <font>
+            <Font name="Sawasdee Bold" size="14.0" />
+         </font></Label>
+      <Label layoutX="419.0" layoutY="136.0" text="Fecha de emisión:" textFill="WHITE">
+         <font>
+            <Font name="Sawasdee Bold" size="14.0" />
+         </font></Label>
+      <Text fx:id="txtFecha" disable="true" fill="#b5b5b5" layoutX="551.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="220.0">
+         <font>
+            <Font name="Sawasdee Bold" size="13.0" />
+         </font></Text>
+      <TableView fx:id="tableView" layoutX="73.0" layoutY="219.0" prefHeight="237.0" prefWidth="633.0" styleClass="tabla">
+        <columns>
+           <TableColumn fx:id="descripcionColumn" prefWidth="400.0" styleClass="celda" text="Nombre del producto" />
+           <TableColumn fx:id="precioUnitarioColumn" prefWidth="137.0" styleClass="celda" text="Precio unitario" />
+           <TableColumn fx:id="cantidadColumn" prefWidth="93.0" styleClass="celda" text="Cantidad" />
+        </columns>
+      </TableView>
+      <Label layoutX="90.0" layoutY="34.0" prefHeight="80.0" prefWidth="252.0" text="Mi bodega" textFill="#95c6ff">
+         <font>
+            <Font name="Sawasdee" size="48.0" />
+         </font>
+      </Label>
+      <Text fx:id="txtNombre" disable="true" fill="#b5b5b5" layoutX="156.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="220.0">
+         <font>
+            <Font name="Sawasdee Bold" size="13.0" />
+         </font>
+      </Text>
+      <Text fx:id="txtRUC" disable="true" fill="#b5b5b5" layoutX="156.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="220.0">
+         <font>
+            <Font name="Sawasdee Bold" size="13.0" />
+         </font>
+      </Text>
+      <Label layoutX="462.0" layoutY="469.0" prefHeight="16.0" prefWidth="54.0" text="TOTAL:" textFill="WHITE" />
+      <TextField fx:id="tfTotal" layoutX="536.0" layoutY="465.0" />
+      <Button fx:id="btnActualizar" layoutX="282.0" layoutY="517.0" mnemonicParsing="false" onAction="#actualizar" prefHeight="39.0" prefWidth="166.0" styleClass="Botones" text="Actualizar">
+         <font>
+            <Font name="Sawasdee" size="17.0" />
+         </font>
+      </Button>
+
+   </children>
+</AnchorPane>

@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="720.0" prefWidth="1280.0" styleClass="miFrame" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.pepitoapp.controller.BodegaFXMLController">
+    <stylesheets>
+        <URL value="@../view/bodegafxml.css" />
+    </stylesheets>
+   <children>
+      <HBox layoutX="1.0" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fillWidth="false" prefHeight="720.0" prefWidth="471.0" spacing="20.0" styleClass="LeftPanel">
+               <children>
+                  <Label alignment="CENTER" prefHeight="40.0" prefWidth="470.0" text="Consultar" textFill="WHITE">
+                     <font>
+                        <Font name="Sawasdee" size="27.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="470.0" text="Codigo" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfCodigo" prefHeight="39.0" prefWidth="250.0" promptText="Ingrese código de producto" styleClass="textfield">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button fx:id="btnBuscarProducto" mnemonicParsing="false" onAction="#accionBuscarProducto" prefHeight="45.0" prefWidth="197.0" stylesheets="@bodegafxml.css" text="Buscar producto">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="fade" />
+                        <String fx:value="Botones" />
+                     </styleClass>
+                  </Button>
+                  <Label prefHeight="28.0" prefWidth="470.0" text="Cantidad" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfCantidad" prefHeight="38.0" prefWidth="250.0" promptText="Ingrese la cantidad" styleClass="textfield">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label prefHeight="28.0" prefWidth="470.0" text="Datos" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfNombre" prefHeight="38.0" prefWidth="250.0" promptText="Ingrese su nombre" styleClass="textfield">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <TextField fx:id="tfRUC" prefHeight="38.0" prefWidth="250.0" promptText="Ingrese su RUC" styleClass="textfield">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                  </TextField>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="50.0" top="100.0" />
+               </padding>
+            </VBox>
+            <VBox fillWidth="false" prefHeight="720.0" prefWidth="521.0" spacing="5.0" styleClass="fondo">
+               <children>
+                  <Label alignment="CENTER" prefHeight="42.0" prefWidth="490.0" text="Informacion del producto">
+                     <font>
+                        <Font name="Sawasdee" size="27.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <textFill>
+                        <RadialGradient centerX="0.5" centerY="0.5" radius="0.5" proportional="true">
+                           <stops>
+                              <Stop>
+                                 <color>
+                                    <Color red="0.6240000128746033" green="0.7352866530418396" blue="0.9599999785423279" />
+                                 </color>
+                              </Stop>
+                              <Stop offset="1.0">
+                                 <color>
+                                    <Color red="0.5092592835426331" green="0.8282407522201538" blue="1.0" />
+                                 </color>
+                              </Stop>
+                           </stops>
+                        </RadialGradient>
+                     </textFill>
+                  </Label>
+                  <Label prefHeight="29.0" prefWidth="497.0" text="Nombre del producto" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" top="40.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfNombreProducto" prefHeight="39.0" prefWidth="350.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="60.0" />
+                     </HBox.margin>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+                  <Label prefHeight="26.0" prefWidth="506.0" text="Tipo" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfTipo" prefHeight="39.0" prefWidth="350.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+                  <Label prefHeight="26.0" prefWidth="508.0" text="Precio unitario de costo" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfPrecioUnitarioCosto" prefHeight="39.0" prefWidth="350.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+                  <Label prefHeight="26.0" prefWidth="498.0" text="Stock" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfStock" prefHeight="39.0" prefWidth="350.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+                  <Label prefHeight="26.0" prefWidth="502.0" text="Lote / Caducidad" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfLote" prefHeight="39.0" prefWidth="350.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+                  <Label prefHeight="28.0" prefWidth="470.0" text="Precio unitario de venta" textFill="#cde4ff">
+                     <font>
+                        <Font name="Sawasdee Bold" size="18.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="60.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="tfPrecioUnitarioVenta" prefHeight="39.0" prefWidth="250.0" promptText="-">
+                     <font>
+                        <Font name="Sawasdee Bold" size="16.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="60.0" />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="justText" />
+                        <String fx:value="text-field-no-editable" />
+                     </styleClass>
+                  </TextField>
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="50.0" top="100.0" />
+               </padding>
+            </VBox>
+            <VBox alignment="CENTER" fillWidth="false" prefHeight="720.0" prefWidth="397.0" spacing="30.0" styleClass="rightPanel">
+               <children>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="365.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="210.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="54.0" prefWidth="202.0" text="Productos en el carrito:" textFill="WHITE" wrapText="true">
+                                 <font>
+                                    <Font name="Sawasdee Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="61.0">
+                           <children>
+                              <TextField fx:id="tfCantidadEnCarrito" alignment="CENTER" prefHeight="44.0" prefWidth="56.0" promptText="---" styleClass="justText">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <Button fx:id="btnAñadirCarrito" mnemonicParsing="false" onAction="#accionAñadirACarrito" prefHeight="50.0" prefWidth="218.0" stylesheets="@bodegafxml.css" text="Añadir a carrito">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="Botones" />
+                        <String fx:value="fade" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="btnEmitirBoleta" mnemonicParsing="false" onAction="#accionEmitirBoletaVenta" prefHeight="51.0" prefWidth="220.0" text="Ver carrito">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <styleClass>
+                        <String fx:value="Botones" />
+                        <String fx:value="fade" />
+                     </styleClass>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

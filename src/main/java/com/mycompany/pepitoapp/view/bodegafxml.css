@@ -1,0 +1,66 @@
+/*
+ * Empty Stylesheet file.
+ */
+/* DIVISIONES DE LA INTERFAZ*/ 
+.fondo{
+    -fx-background-color: #172541;
+    height: 5px;
+    
+}
+
+.LeftPanel{
+    -fx-background-color: BLACK;
+}
+
+
+.rightPanel{
+    -fx-background-color: #455b93;
+}
+
+/* ELEMENTOS DE LA INTERFAZ*/
+.Botones {
+    -fx-background-color: #68a0fe; /* Color de fondo */
+    -fx-text-fill: black; /* Color del texto */
+    -fx-font-family: Sawasdee;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px; /* Tamaño de la fuente */
+    -fx-background-radius: 5px;
+}
+
+
+/* EFECTOS Y ANIMACIONES*/
+
+.fade:pressed{
+    -fx-background-color: #95BBFD;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-scale-z: 1.03;
+    
+}
+
+.text-field {
+  -fx-background-color: black, white;
+}
+
+.text-field:focused {
+  -fx-background-color: #68a0fe, white ;
+  -fx-background-insets: 0, 0 0 2.5 0 ;
+  
+}
+
+.justText{
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.text-field-no-editable {
+    -fx-mouse-transparent: true;
+}
+/*
+.color1 {color: #000000;}
+.color2 {color: #172541;}
+.color3 {color: #455b93;}
+.color4 {color: #7e98f0;}
+.color5 {color: #c0dbff;}
+
+*/
