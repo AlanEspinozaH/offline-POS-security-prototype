@@ -7,7 +7,7 @@ La intención de este repositorio es **mostrar y sustentar la capa de seguridad*
 ## 1. Contexto del proyecto
 
 - Sistema POS de escritorio para bodega en Lima (San Juan de Miraflores).
-- Operación **offline-first** sobre una PC de recursos modestos (Windows 11, Inter Core I3 7ma gen/ryzen 3. 6GB RAM, 250GB SSD, Graficos integrados, pantalla estandar).  
+- Operación **offline-first** sobre una PC de recursos modestos (Windows 11, Inter Core I3 7ma gen/ryzen 3. 6GB RAM, 250GB SSD, Graficos integrados, pantalla estandar).
 - Lenguaje objetivo: **Java JDK 21 o superior**.
 - Interfaz gráfica: **JavaFX 23**.
 - Base de datos local: **SQLite**, con migración planeada a **SQLCipher** para cifrado en reposo.
@@ -36,7 +36,7 @@ Quedan **fuera de este repositorio**:
 - Flujo completo de ventas e inventario de PepitoApp.
 - Reportes, UI completa, lógica de negocio detallada.
 
-## 3. Arquitectura y pseudocodigo
+## 3. Arquitectura y pseudocódigo
 
 1. **Arquitectura y diseño**
    - Diagrama de módulos:
@@ -57,3 +57,14 @@ Quedan **fuera de este repositorio**:
        current_hash = H(prev_hash || sale_json)
        signature = Ed25519.sign(private_key, current_hash)
        store_ledger_entry(sale_json, current_hash, prev_hash, signature, key_id, timestamp)
+   ```
+
+3. **Resultados experimentales mínimos**
+
+   - Comparar baseline vs. bitácora firmada + cifrado en reposo.
+   - Medir latencia p95/p99 para registrar venta y cierre de caja.
+   - Registrar tasa de tampering no detectado (TAND) en escenarios controlados.
+
+## 4. Estrategia para demo y protección de PepitoApp
+
+La guía práctica para dividir el proyecto en producto privado y demo pública, qué mostrar en sustentación, cómo responder a solicitudes de código y cómo dejar evidencia de autoría se encuentra en `docs/security-demo-strategy.md`.
