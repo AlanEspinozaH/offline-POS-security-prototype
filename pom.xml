@@ -34,6 +34,11 @@
           <artifactId>sqlite-jdbc</artifactId>
           <version>3.46.0.0</version>
         </dependency>
+        <dependency>
+          <groupId>de.mkammerer</groupId>
+          <artifactId>argon2-jvm</artifactId>
+          <version>2.11</version>
+        </dependency>
         <!--dependencia  SLF4J -api, que es la API de SLF4J, pero no la implementación-->
         <dependency>
             <groupId>org.slf4j</groupId>

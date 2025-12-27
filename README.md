@@ -68,3 +68,7 @@ Quedan **fuera de este repositorio**:
 ## 4. Estrategia para demo y protección de PepitoApp
 
 La guía práctica para dividir el proyecto en producto privado y demo pública, qué mostrar en sustentación, cómo responder a solicitudes de código y cómo dejar evidencia de autoría se encuentra en `docs/security-demo-strategy.md`.
+
+## 5. Blueprint de implementación de la capa de seguridad
+
+Un desglose por capas, iteraciones y fragmentos de código de ejemplo para la bitácora firmada, gestión de claves y SQLCipher con Argon2id está documentado en `docs/security-implementation-blueprint.md`.
