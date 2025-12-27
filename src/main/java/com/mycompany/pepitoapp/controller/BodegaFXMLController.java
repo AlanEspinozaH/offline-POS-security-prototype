@@ -169,7 +169,7 @@ public class BodegaFXMLController implements Initializable {
         Item prod = new Item ("vacio", 0.0, 0);
         
         prod.setDescripcion (tfNombreProducto.getText());
-        prod.setPrecioUnitario(Double.parseDouble(tfPrecioUnitarioCosto.getText()));
+        prod.setPrecioUnitario(Double.parseDouble(tfPrecioUnitarioVenta.getText()));
         prod.setCantidad(Integer.parseInt(tfCantidad.getText()));
         if (!prod.getDescripcion().equals("vacio") && prod.getPrecioUnitario() > 0.0 && prod.getCantidad()!=0) {
 
