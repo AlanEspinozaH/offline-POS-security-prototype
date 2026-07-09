@@ -2,6 +2,8 @@
 
 Este repositorio incluye un mecanismo mínimo de automatización para levantar métricas reproducibles sobre la bitácora local firmada. La intención no es reemplazar el experimento completo de Proyecto de Tesis II, sino dejar instalado un instrumento técnico que permita recolectar evidencia de forma incremental.
 
+Para instalación segura, manejo de secretos, ejecución reproducible y checklist DevSecOps, revisar también `docs/INSTALLATION.md`.
+
 ## Objetivo
 
 El runner `ThesisMetricsRunner` genera ventas sintéticas, las inserta en una bitácora hash-chain firmada con Ed25519, verifica la cadena limpia, aplica una alteración controlada sobre `sale_json` y vuelve a verificar. Al final exporta:
