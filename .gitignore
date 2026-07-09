@@ -17,6 +17,12 @@ pom.xml.versionsBackup
 # Archivos locales / datos
 # Las BD son binarios que generan conflictos feos si varios las modifican.
 *.db
+*.db-shm
+*.db-wal
+
+# Salidas locales del harness de tesis
+/thesis-metrics-output/
+/.pepitoapp/
 
 # Hojas de cálculo locales (excel)
 *.ods
