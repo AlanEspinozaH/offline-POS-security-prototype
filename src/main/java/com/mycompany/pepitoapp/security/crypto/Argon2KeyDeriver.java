@@ -28,21 +28,22 @@ public class Argon2KeyDeriver {
     /**
      * Derive a key with Argon2id using the provided salt.
      *
-     * @param passphrase human provided secret
+     * @param passphrase human provided secret; the caller-owned array is not wiped
      * @param salt random salt
      * @return derived key bytes of length hashLength
      */
     public byte[] deriveKey(char[] passphrase, byte[] salt) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, hashLength, salt.length);
+        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, salt.length, hashLength);
+        char[] workingCopy = passphrase.clone();
         try {
-            String encoded = argon2.hash(iterations, memoryKb, parallelism, passphrase, salt);
+            String encoded = argon2.hash(iterations, memoryKb, parallelism, workingCopy, salt);
             String[] parts = encoded.split("\\$");
             if (parts.length < 6) {
                 throw new IllegalStateException("Invalid Argon2 hash format");
             }
             return Base64.getDecoder().decode(parts[5]);
         } finally {
-            argon2.wipeArray(passphrase);
+            argon2.wipeArray(workingCopy);
         }
     }
 }
