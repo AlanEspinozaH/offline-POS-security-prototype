@@ -83,14 +83,17 @@ public final class ThesisMetricsRunner {
         Path csvPath = config.outputDir().resolve("thesis_metrics.csv");
         Path summaryPath = config.outputDir().resolve("thesis_metrics_summary.json");
         Path markdownPath = config.outputDir().resolve("thesis_results_preliminary.md");
+        Path manifestPath = config.outputDir().resolve("thesis_experiment_manifest.json");
         SummaryMetrics summary = summarize(rows, config);
         writeCsv(csvPath, rows);
         writeSummaryJson(summaryPath, summary);
         writePreliminaryMarkdown(markdownPath, rows, config, summary);
+        writeExperimentManifest(manifestPath, config, summary);
 
         System.out.println("Metrics written to: " + csvPath.toAbsolutePath());
         System.out.println("Summary written to: " + summaryPath.toAbsolutePath());
         System.out.println("Preliminary report written to: " + markdownPath.toAbsolutePath());
+        System.out.println("Experiment manifest written to: " + manifestPath.toAbsolutePath());
     }
 
     private static ExperimentContext createContext(Path runDir, Config config) throws IOException {
@@ -271,6 +274,29 @@ public final class ThesisMetricsRunner {
         Files.writeString(path, json, StandardCharsets.UTF_8);
     }
 
+    private static void writeExperimentManifest(
+            Path path,
+            Config config,
+            SummaryMetrics summary
+    ) throws IOException {
+        String json = "{\n"
+                + "  \"generatedAtUtc\": " + jsonString(summary.generatedAtUtc().toString()) + ",\n"
+                + "  \"mechanism\": " + jsonString(summary.mechanism()) + ",\n"
+                + "  \"records\": " + config.records() + ",\n"
+                + "  \"runs\": " + config.runs() + ",\n"
+                + "  \"tamperIndex\": " + config.tamperIndex() + ",\n"
+                + "  \"outputDirectory\": " + jsonString(config.outputDir().toString()) + ",\n"
+                + "  \"seed\": " + config.seed() + ",\n"
+                + "  \"argonIterations\": " + config.argonIterations() + ",\n"
+                + "  \"argonMemoryKb\": " + config.argonMemoryKb() + ",\n"
+                + "  \"javaVersion\": " + jsonString(System.getProperty("java.version", "")) + ",\n"
+                + "  \"osName\": " + jsonString(System.getProperty("os.name", "")) + ",\n"
+                + "  \"osArch\": " + jsonString(System.getProperty("os.arch", "")) + ",\n"
+                + "  \"academicScope\": \"PRELIMINARY_PROJECT_TESIS_I\"\n"
+                + "}\n";
+        Files.writeString(path, json, StandardCharsets.UTF_8);
+    }
+
     private static void writePreliminaryMarkdown(
             Path path,
             List<MetricRow> rows,
@@ -381,6 +407,19 @@ public final class ThesisMetricsRunner {
             return "";
         }
         return '"' + value.replace("\"", "\"\"") + '"';
+    }
+
+    private static String jsonString(String value) {
+        if (value == null) {
+            return "\"\"";
+        }
+        return '"' + value
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n")
+                .replace("\r", "\\r")
+                .replace("\t", "\\t")
+                + '"';
     }
 
     private static String formatDouble(double value) {
