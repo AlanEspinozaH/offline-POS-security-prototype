@@ -7,7 +7,7 @@
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>24</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <!-- Versión recomendada de JavaFX hoy -->
         <javafx.version>23.0.1</javafx.version>
         <exec.mainClass>com.mycompany.pepitoapp.PepitoApp</exec.mainClass>
@@ -67,6 +67,14 @@
         </resources>
         
      <plugins>
+      <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
+          <configuration>
+            <release>${maven.compiler.release}</release>
+          </configuration>
+        </plugin>
       <!-- Plugin oficial JavaFX: gestiona módulos y nativos por SO -->
        <plugin>
           <groupId>org.openjfx</groupId>
