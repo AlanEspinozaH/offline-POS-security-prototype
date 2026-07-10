@@ -1,0 +1,15 @@
+{
+  "generatedAtUtc": "2026-07-10T03:59:04.452733984Z",
+  "mechanism": "M6_HASH_CHAIN_ED25519",
+  "records": 50,
+  "runs": 2,
+  "tamperIndex": 10,
+  "outputDirectory": "build/thesis-metrics-final-pi1",
+  "seed": 20260709,
+  "argonIterations": 1,
+  "argonMemoryKb": 8192,
+  "javaVersion": "24.0.1",
+  "osName": "Linux",
+  "osArch": "amd64",
+  "academicScope": "PRELIMINARY_PROJECT_TESIS_I"
+}

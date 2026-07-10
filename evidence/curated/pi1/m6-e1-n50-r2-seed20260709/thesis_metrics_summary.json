@@ -1,0 +1,11 @@
+{
+  "generatedAtUtc": "2026-07-10T03:59:04.452733984Z",
+  "mechanism": "M6_HASH_CHAIN_ED25519",
+  "recordsPerRun": 50,
+  "runs": 2,
+  "tamperRuns": 2,
+  "detectedTamperRuns": 2,
+  "tamperDetectionRate": 1.000000,
+  "meanAppendP95Ms": 17.061653,
+  "meanVerificationMs": 264.944621
+}
