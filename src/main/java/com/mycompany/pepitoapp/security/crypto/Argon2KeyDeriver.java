@@ -1,8 +1,7 @@
 package com.mycompany.pepitoapp.security.crypto;
 
-import de.mkammerer.argon2.Argon2;
+import de.mkammerer.argon2.Argon2Advanced;
 import de.mkammerer.argon2.Argon2Factory;
-import java.util.Base64;
 
 /**
  * Utility to derive fixed-length keys using Argon2id.
@@ -33,15 +32,10 @@ public class Argon2KeyDeriver {
      * @return derived key bytes of length hashLength
      */
     public byte[] deriveKey(char[] passphrase, byte[] salt) {
-        Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id, salt.length, hashLength);
+        Argon2Advanced argon2 = Argon2Factory.createAdvanced(Argon2Factory.Argon2Types.ARGON2id, salt.length, hashLength);
         char[] workingCopy = passphrase.clone();
         try {
-            String encoded = argon2.hash(iterations, memoryKb, parallelism, workingCopy, salt);
-            String[] parts = encoded.split("\\$");
-            if (parts.length < 6) {
-                throw new IllegalStateException("Invalid Argon2 hash format");
-            }
-            return Base64.getDecoder().decode(parts[5]);
+            return argon2.rawHash(iterations, memoryKb, parallelism, workingCopy, salt);
         } finally {
             argon2.wipeArray(workingCopy);
         }

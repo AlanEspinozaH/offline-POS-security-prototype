@@ -4,6 +4,7 @@ import com.mycompany.pepitoapp.security.crypto.CryptoService;
 import com.mycompany.pepitoapp.security.storage.SecureDatabaseProvider;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -125,9 +126,13 @@ public class LedgerService {
         }
     }
 
-    private String hash(String data) throws Exception {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] out = digest.digest(data.getBytes(StandardCharsets.UTF_8));
-        return Base64.getEncoder().encodeToString(out);
+    private String hash(String data) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] out = digest.digest(data.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(out);
+        } catch (NoSuchAlgorithmException ex) {
+            throw new IllegalStateException("SHA-256 algorithm is not available", ex);
+        }
     }
 }
