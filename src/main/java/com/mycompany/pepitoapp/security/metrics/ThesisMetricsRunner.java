@@ -84,16 +84,19 @@ public final class ThesisMetricsRunner {
         Path summaryPath = config.outputDir().resolve("thesis_metrics_summary.json");
         Path markdownPath = config.outputDir().resolve("thesis_results_preliminary.md");
         Path manifestPath = config.outputDir().resolve("thesis_experiment_manifest.json");
+        Path explainedPath = config.outputDir().resolve("thesis_results_explained.md");
         SummaryMetrics summary = summarize(rows, config);
         writeCsv(csvPath, rows);
         writeSummaryJson(summaryPath, summary);
         writePreliminaryMarkdown(markdownPath, rows, config, summary);
         writeExperimentManifest(manifestPath, config, summary);
+        writeExplainedMarkdown(explainedPath, rows, config, summary);
 
         System.out.println("Metrics written to: " + csvPath.toAbsolutePath());
         System.out.println("Summary written to: " + summaryPath.toAbsolutePath());
         System.out.println("Preliminary report written to: " + markdownPath.toAbsolutePath());
         System.out.println("Experiment manifest written to: " + manifestPath.toAbsolutePath());
+        System.out.println("Explained report written to: " + explainedPath.toAbsolutePath());
     }
 
     private static ExperimentContext createContext(Path runDir, Config config) throws IOException {
@@ -345,6 +348,71 @@ public final class ThesisMetricsRunner {
         builder.append("- Solo evalua `M6_HASH_CHAIN_ED25519`.\n");
         builder.append("- Solo cubre `E1_EDIT_SALE_JSON` como escenario controlado de alteracion.\n");
         builder.append("- No reemplaza el benchmark completo requerido para Proyecto de Tesis II.\n");
+
+        Files.writeString(path, builder.toString(), StandardCharsets.UTF_8);
+    }
+
+    private static void writeExplainedMarkdown(
+            Path path,
+            List<MetricRow> rows,
+            Config config,
+            SummaryMetrics summary
+    ) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        builder.append("# Resultados explicados del harness de tesis\n\n");
+
+        builder.append("## Metadatos de ejecución\n\n");
+        builder.append("- generatedAtUtc: `").append(summary.generatedAtUtc()).append("`\n");
+        builder.append("- mechanism: `").append(summary.mechanism()).append("`\n");
+        builder.append("- records per run: `").append(summary.recordsPerRun()).append("`\n");
+        builder.append("- runs: `").append(summary.runs()).append("`\n");
+        builder.append("- tamper index: `").append(config.tamperIndex()).append("`\n");
+        builder.append("- seed: `").append(config.seed()).append("`\n");
+        builder.append("- academic scope: `PRELIMINARY_PROJECT_TESIS_I`\n\n");
+
+        builder.append("## Resumen de métricas principales\n\n");
+        builder.append("| Métrica | Valor | Unidad | Significado técnico | Uso en Capítulo V | Límite de interpretación |\n");
+        builder.append("| --- | ---: | --- | --- | --- | --- |\n");
+        builder.append("| `tamperDetectionRate` | ").append(formatPercent(summary.tamperDetectionRate()))
+                .append(" | proporción | Proporción de corridas alteradas detectadas por la verificación. | Evidencia preliminar de detectabilidad para el escenario controlado. | No representa todos los ataques ni todos los mecanismos. |\n");
+        builder.append("| `detectedTamperRuns / tamperRuns` | ").append(summary.detectedTamperRuns())
+                .append(" / ").append(summary.tamperRuns())
+                .append(" | corridas | Conteo de alteraciones detectadas frente al total de corridas alteradas. | Permite explicar el numerador y denominador de la tasa de detección. | Depende del número reducido de corridas configuradas. |\n");
+        builder.append("| `meanAppendP95Ms` | ").append(formatDouble(summary.meanAppendP95Ms()))
+                .append(" | ms | Promedio del percentil 95 de inserción protegida. | Aproxima el costo preliminar de escritura con integridad local. | No reemplaza una prueba de rendimiento con carga real. |\n");
+        builder.append("| `meanVerificationMs` | ").append(formatDouble(summary.meanVerificationMs()))
+                .append(" | ms | Tiempo medio de verificación de la cadena en los escenarios ejecutados. | Ayuda a discutir el costo de validación local. | Solo aplica al tamaño de datos sintéticos usado. |\n");
+        builder.append("| `recordsPerRun` | ").append(summary.recordsPerRun())
+                .append(" | registros | Cantidad de ventas sintéticas generadas en cada corrida. | Define la escala del ensayo preliminar. | No equivale a volumen productivo. |\n");
+        builder.append("| `runs` | ").append(summary.runs())
+                .append(" | corridas | Número de repeticiones configuradas para el ensayo. | Sustenta la repetición mínima del smoke test. | No es el número final de repeticiones del benchmark comparativo. |\n\n");
+
+        builder.append("## Escenarios ejecutados\n\n");
+        builder.append("| scenario | operation | executions | detections | mean duration ms | mean append p95 ms | mean database bytes |\n");
+        builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
+        for (ScenarioSummary scenario : summarizeScenarios(rows)) {
+            builder.append("| `").append(scenario.scenario()).append("` | `")
+                    .append(scenario.operation()).append("` | ")
+                    .append(scenario.executions()).append(" | ")
+                    .append(scenario.detections()).append(" | ")
+                    .append(formatDouble(scenario.meanDurationMs())).append(" | ")
+                    .append(formatDouble(scenario.meanP95AppendMs())).append(" | ")
+                    .append(formatDouble(scenario.meanDbBytes())).append(" |\n");
+        }
+        builder.append("\n");
+
+        builder.append("## Interpretación académica breve\n\n");
+        builder.append("El resultado actual valida instrumentación automatizada preliminar para Proyecto de Tesis I. ");
+        builder.append("También sustenta que el harness puede generar evidencia local reproducible con parámetros explícitos. ");
+        builder.append("La ejecución actual solo evalúa `M6_HASH_CHAIN_ED25519` y solo cubre `E1_EDIT_SALE_JSON`. ");
+        builder.append("Por tanto, no debe presentarse como el benchmark comparativo final de Proyecto de Tesis II.\n\n");
+
+        builder.append("## Evidencia generada por esta corrida\n\n");
+        builder.append("- `thesis_metrics.csv`\n");
+        builder.append("- `thesis_metrics_summary.json`\n");
+        builder.append("- `thesis_results_preliminary.md`\n");
+        builder.append("- `thesis_experiment_manifest.json`\n");
+        builder.append("- `thesis_results_explained.md`\n");
 
         Files.writeString(path, builder.toString(), StandardCharsets.UTF_8);
     }
