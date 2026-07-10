@@ -5,6 +5,8 @@
  */
 package com.mycompany.pepitoapp.controller;
 
+import com.mycompany.pepitoapp.storage.ProductDatabaseProvider;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,7 +27,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.event.ActionEvent;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -39,6 +40,7 @@ import com.mycompany.pepitoapp.model.Item;
  */
 public class BodegaFXMLController implements Initializable {
     public static LinkedList<Item> listaItem = new LinkedList<>();
+    private final ProductDatabaseProvider productDatabaseProvider = new ProductDatabaseProvider();
 
     @FXML private Button btnAñadirCarrito;
     @FXML private Button btnBuscarProducto;
@@ -73,9 +75,7 @@ public class BodegaFXMLController implements Initializable {
             return; 
         }
 
-        String url = "jdbc:sqlite:C:\\Users\\USUARIO\\Documents\\NetBeansProjects\\PepitoApp\\productos2.db";
-
-        try (Connection connection = DriverManager.getConnection(url)) {
+        try (Connection connection = productDatabaseProvider.getConnection()) {
          
             String sql = "SELECT * FROM productos WHERE id_productos = ?";
 

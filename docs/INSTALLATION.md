@@ -44,6 +44,16 @@ Run the JavaFX application:
 mvn javafx:run
 ```
 
+Configure the local products database used by the inventory screen:
+
+- Recommended location: `local-data/productos2.db`
+- Optional override: set `PEPITO_PRODUCTOS_DB` to the full path of `productos2.db`
+- Verification command:
+
+```bash
+sqlite3 local-data/productos2.db "SELECT COUNT(*) FROM productos;"
+```
+
 ## 3. Local secrets and passphrases
 
 The prototype must not commit real keys, real passphrases, local databases, or production receipts.
