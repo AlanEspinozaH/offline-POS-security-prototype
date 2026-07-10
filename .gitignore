@@ -27,7 +27,8 @@ pom.xml.versionsBackup
 # Hojas de cálculo locales (excel)
 *.ods
 
-# Logs o notas.txt que no es necesario que esten en Github
+# Salidas locales de ejecucion y pruebas manuales de la app.
+# historial.txt se genera al confirmar ventas y no debe versionarse.
 errores.txt
 historial.txt
 base_datos.txt
