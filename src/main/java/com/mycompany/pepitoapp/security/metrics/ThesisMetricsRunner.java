@@ -82,11 +82,15 @@ public final class ThesisMetricsRunner {
 
         Path csvPath = config.outputDir().resolve("thesis_metrics.csv");
         Path summaryPath = config.outputDir().resolve("thesis_metrics_summary.json");
+        Path markdownPath = config.outputDir().resolve("thesis_results_preliminary.md");
+        SummaryMetrics summary = summarize(rows, config);
         writeCsv(csvPath, rows);
-        writeSummaryJson(summaryPath, rows, config);
+        writeSummaryJson(summaryPath, summary);
+        writePreliminaryMarkdown(markdownPath, rows, config, summary);
 
         System.out.println("Metrics written to: " + csvPath.toAbsolutePath());
         System.out.println("Summary written to: " + summaryPath.toAbsolutePath());
+        System.out.println("Preliminary report written to: " + markdownPath.toAbsolutePath());
     }
 
     private static ExperimentContext createContext(Path runDir, Config config) throws IOException {
@@ -225,7 +229,7 @@ public final class ThesisMetricsRunner {
         Files.writeString(path, builder.toString(), StandardCharsets.UTF_8);
     }
 
-    private static void writeSummaryJson(Path path, List<MetricRow> rows, Config config) throws IOException {
+    private static SummaryMetrics summarize(List<MetricRow> rows, Config config) {
         long tamperRuns = rows.stream().filter(row -> row.scenario().startsWith("E")).count();
         long detectedRuns = rows.stream().filter(row -> row.scenario().startsWith("E") && row.detected()).count();
         double detectionRate = tamperRuns == 0 ? 0.0 : detectedRuns / (double) tamperRuns;
@@ -239,19 +243,137 @@ public final class ThesisMetricsRunner {
                 .mapToDouble(MetricRow::durationMs)
                 .average()
                 .orElse(0.0);
+        return new SummaryMetrics(
+                Instant.now(),
+                MECHANISM,
+                config.records(),
+                config.runs(),
+                tamperRuns,
+                detectedRuns,
+                detectionRate,
+                appendP95Mean,
+                verificationMsMean
+        );
+    }
 
+    private static void writeSummaryJson(Path path, SummaryMetrics summary) throws IOException {
         String json = "{\n"
-                + "  \"generatedAtUtc\": \"" + Instant.now() + "\",\n"
-                + "  \"mechanism\": \"" + MECHANISM + "\",\n"
-                + "  \"recordsPerRun\": " + config.records() + ",\n"
-                + "  \"runs\": " + config.runs() + ",\n"
-                + "  \"tamperRuns\": " + tamperRuns + ",\n"
-                + "  \"detectedTamperRuns\": " + detectedRuns + ",\n"
-                + "  \"tamperDetectionRate\": " + formatDouble(detectionRate) + ",\n"
-                + "  \"meanAppendP95Ms\": " + formatDouble(appendP95Mean) + ",\n"
-                + "  \"meanVerificationMs\": " + formatDouble(verificationMsMean) + "\n"
+                + "  \"generatedAtUtc\": \"" + summary.generatedAtUtc() + "\",\n"
+                + "  \"mechanism\": \"" + summary.mechanism() + "\",\n"
+                + "  \"recordsPerRun\": " + summary.recordsPerRun() + ",\n"
+                + "  \"runs\": " + summary.runs() + ",\n"
+                + "  \"tamperRuns\": " + summary.tamperRuns() + ",\n"
+                + "  \"detectedTamperRuns\": " + summary.detectedTamperRuns() + ",\n"
+                + "  \"tamperDetectionRate\": " + formatDouble(summary.tamperDetectionRate()) + ",\n"
+                + "  \"meanAppendP95Ms\": " + formatDouble(summary.meanAppendP95Ms()) + ",\n"
+                + "  \"meanVerificationMs\": " + formatDouble(summary.meanVerificationMs()) + "\n"
                 + "}\n";
         Files.writeString(path, json, StandardCharsets.UTF_8);
+    }
+
+    private static void writePreliminaryMarkdown(
+            Path path,
+            List<MetricRow> rows,
+            Config config,
+            SummaryMetrics summary
+    ) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        builder.append("# Resultados preliminares del harness de tesis\n\n");
+        builder.append("Generado en UTC: `").append(summary.generatedAtUtc()).append("`\n\n");
+
+        builder.append("## Ejecucion\n\n");
+        builder.append("```bash\n");
+        builder.append(reconstructedCommand(config)).append("\n");
+        builder.append("```\n\n");
+        builder.append("- Mecanismo evaluado: `").append(summary.mechanism()).append("`\n");
+        builder.append("- Registros por corrida: `").append(summary.recordsPerRun()).append("`\n");
+        builder.append("- Corridas: `").append(summary.runs()).append("`\n");
+        builder.append("- Indice alterado: `").append(config.tamperIndex()).append("`\n");
+        builder.append("- Directorio de salida: `").append(config.outputDir()).append("`\n\n");
+
+        builder.append("## Resumen preliminar\n\n");
+        builder.append("| Metrica | Valor |\n");
+        builder.append("| --- | ---: |\n");
+        builder.append("| Tasa de deteccion | ").append(formatPercent(summary.tamperDetectionRate())).append(" |\n");
+        builder.append("| P95 promedio de insercion | ").append(formatDouble(summary.meanAppendP95Ms())).append(" ms |\n");
+        builder.append("| Tiempo medio de verificacion | ").append(formatDouble(summary.meanVerificationMs())).append(" ms |\n");
+        builder.append("| Corridas alteradas detectadas | ").append(summary.detectedTamperRuns())
+                .append(" / ").append(summary.tamperRuns()).append(" |\n\n");
+
+        builder.append("## Escenarios ejecutados\n\n");
+        builder.append("| Escenario | Operacion | Ejecuciones | Detecciones | Duracion media (ms) | P95 promedio insercion (ms) | Bytes medios BD |\n");
+        builder.append("| --- | --- | ---: | ---: | ---: | ---: | ---: |\n");
+        for (ScenarioSummary scenario : summarizeScenarios(rows)) {
+            builder.append("| `").append(scenario.scenario()).append("` | `")
+                    .append(scenario.operation()).append("` | ")
+                    .append(scenario.executions()).append(" | ")
+                    .append(scenario.detections()).append(" | ")
+                    .append(formatDouble(scenario.meanDurationMs())).append(" | ")
+                    .append(formatDouble(scenario.meanP95AppendMs())).append(" | ")
+                    .append(formatDouble(scenario.meanDbBytes())).append(" |\n");
+        }
+        builder.append("\n");
+
+        builder.append("## Limitaciones academicas\n\n");
+        builder.append("- Esto es evidencia preliminar para Proyecto de Tesis I.\n");
+        builder.append("- Solo evalua `M6_HASH_CHAIN_ED25519`.\n");
+        builder.append("- Solo cubre `E1_EDIT_SALE_JSON` como escenario controlado de alteracion.\n");
+        builder.append("- No reemplaza el benchmark completo requerido para Proyecto de Tesis II.\n");
+
+        Files.writeString(path, builder.toString(), StandardCharsets.UTF_8);
+    }
+
+    private static List<ScenarioSummary> summarizeScenarios(List<MetricRow> rows) {
+        List<ScenarioSummary> summaries = new ArrayList<>();
+        for (MetricRow row : rows) {
+            boolean alreadySummarized = summaries.stream()
+                    .anyMatch(summary -> summary.scenario().equals(row.scenario())
+                            && summary.operation().equals(row.operation()));
+            if (alreadySummarized) {
+                continue;
+            }
+            List<MetricRow> matchingRows = rows.stream()
+                    .filter(candidate -> candidate.scenario().equals(row.scenario())
+                            && candidate.operation().equals(row.operation()))
+                    .toList();
+            long detections = matchingRows.stream().filter(MetricRow::detected).count();
+            double meanDurationMs = matchingRows.stream()
+                    .mapToDouble(MetricRow::durationMs)
+                    .average()
+                    .orElse(0.0);
+            double meanP95AppendMs = matchingRows.stream()
+                    .mapToDouble(MetricRow::p95AppendMs)
+                    .average()
+                    .orElse(0.0);
+            double meanDbBytes = matchingRows.stream()
+                    .mapToLong(MetricRow::dbBytes)
+                    .average()
+                    .orElse(0.0);
+            summaries.add(new ScenarioSummary(
+                    row.scenario(),
+                    row.operation(),
+                    matchingRows.size(),
+                    detections,
+                    meanDurationMs,
+                    meanP95AppendMs,
+                    meanDbBytes
+            ));
+        }
+        return summaries;
+    }
+
+    private static String reconstructedCommand(Config config) {
+        return "mvn org.codehaus.mojo:exec-maven-plugin:3.5.0:java "
+                + "-Dexec.mainClass=com.mycompany.pepitoapp.security.metrics.ThesisMetricsRunner "
+                + "-Dexec.args=\""
+                + "--records=" + config.records()
+                + " --runs=" + config.runs()
+                + " --tamper-index=" + config.tamperIndex()
+                + " --output=" + config.outputDir()
+                + " --seed=" + config.seed()
+                + " --argon-iterations=" + config.argonIterations()
+                + " --argon-memory-kb=" + config.argonMemoryKb()
+                + "\"";
     }
 
     private static String csv(String value) {
@@ -263,6 +385,34 @@ public final class ThesisMetricsRunner {
 
     private static String formatDouble(double value) {
         return String.format(Locale.ROOT, "%.6f", value);
+    }
+
+    private static String formatPercent(double value) {
+        return String.format(Locale.ROOT, "%.2f%%", value * 100.0);
+    }
+
+    private record SummaryMetrics(
+            Instant generatedAtUtc,
+            String mechanism,
+            int recordsPerRun,
+            int runs,
+            long tamperRuns,
+            long detectedTamperRuns,
+            double tamperDetectionRate,
+            double meanAppendP95Ms,
+            double meanVerificationMs
+    ) {
+    }
+
+    private record ScenarioSummary(
+            String scenario,
+            String operation,
+            int executions,
+            long detections,
+            double meanDurationMs,
+            double meanP95AppendMs,
+            double meanDbBytes
+    ) {
     }
 
     private record ExperimentContext(
