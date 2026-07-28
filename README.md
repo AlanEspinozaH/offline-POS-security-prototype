@@ -4,6 +4,8 @@ Este repositorio corresponde a una **demo de investigación** donde se implement
 
 La intención de este repositorio es **mostrar y sustentar la capa de seguridad** (bitácora encadenada, firmas digitales y cifrado en reposo) pues es la parte central o medular del proyecto.
 
+⚠️ Repositorio congelado como evidencia de PT1 (tag pt1-final). El desarrollo de PT2 continúa en offline-ledger-security-benchmark.
+
 ## 1. Contexto del proyecto
 
 - Sistema POS de escritorio para bodega en Lima (San Juan de Miraflores).
