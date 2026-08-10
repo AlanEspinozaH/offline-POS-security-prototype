@@ -5,7 +5,9 @@
  */
 package com.mycompany.pepitoapp.controller;
 
-import com.mycompany.pepitoapp.storage.ProductDatabaseProvider;
+import com.mycompany.pepitoapp.ApplicationServices;
+import com.mycompany.pepitoapp.application.catalog.ProductQueryService;
+import com.mycompany.pepitoapp.presentation.MoneyFormats;
 
 import java.io.IOException;
 import java.net.URL;
@@ -26,9 +28,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.event.ActionEvent;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
@@ -40,7 +39,7 @@ import com.mycompany.pepitoapp.model.Item;
  */
 public class BodegaFXMLController implements Initializable {
     public static LinkedList<Item> listaItem = new LinkedList<>();
-    private final ProductDatabaseProvider productDatabaseProvider = new ProductDatabaseProvider();
+    private ProductQueryService productQueryService;
 
     @FXML private Button btnAñadirCarrito;
     @FXML private Button btnBuscarProducto;
@@ -62,32 +61,25 @@ public class BodegaFXMLController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        productQueryService = ApplicationServices.get().productQuery();
         btnAñadirCarrito.setDisable(true);
         tfCantidad.setDisable(true);
+        tfCodigo.setOnAction(event -> accionBuscarProducto());
     }    
     
     
     @FXML private void accionBuscarProducto(){
         String codigoIngresado = tfCodigo.getText();
 
-        if (codigoIngresado.isEmpty() || !esNumeroValido(codigoIngresado)) {
-            mostrarAlerta("Entrada inválida", "Ingrese un número válido antes de buscar.");
+        if (codigoIngresado == null || codigoIngresado.isBlank()) {
+            mostrarAlerta("Entrada inválida", "Ingrese o escanee un código de producto.");
             return; 
         }
 
-        try (Connection connection = productDatabaseProvider.getConnection()) {
-         
-            String sql = "SELECT * FROM productos WHERE id_productos = ?";
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-
-               // int id = Integer.parseInt(codigoIngresado);
-               // preparedStatement.setInt(1, id);
-               preparedStatement.setString(1, codigoIngresado);
-               
-
-                try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                    if (resultSet.next()) {
+        try {
+            var found = productQueryService.findByBarcode(codigoIngresado);
+            if (found.isPresent()) {
+                        var product = found.get();
 
                         tfNombreProducto.setEditable(false);
                         tfTipo.setEditable(false);
@@ -97,19 +89,16 @@ public class BodegaFXMLController implements Initializable {
                         tfLote.setEditable(false);
                         
                         tfCantidad.setText("0");
-                        tfTipo.setText(resultSet.getString("tipo"));
-                        tfStock.setText(Integer.toString(resultSet.getInt("stock_unidades")));
-                        tfNombreProducto.setText(resultSet.getString("nombre"));
-                        tfPrecioUnitarioCosto.setText(Double.toString(resultSet.getDouble("precio_unitario_costo")));
-                        tfLote.setText(resultSet.getString("fecha_de_caducidad"));
-                        tfPrecioUnitarioVenta.setText(Double.toString(resultSet.getDouble("precio_unitario_venta")));
-
-
-                    } else {
-                        limpiarCampos();     //cuando codigo ingresado se convertia a entero "id" iba en vez de "codigoIngresado"
-                        mostrarAlerta("Producto no encontrado", "El producto con ID " + codigoIngresado + " no fue encontrado.");
-                    }
-                }
+                        tfTipo.setText(product.type());
+                        tfStock.setText(Integer.toString(product.stockUnits()));
+                        tfNombreProducto.setText(product.name());
+                        tfPrecioUnitarioCosto.setText(MoneyFormats.preciseCost(product.latestUnitCostCents()));
+                        tfLote.setText("Consultar lote legacy");
+                        tfPrecioUnitarioVenta.setText(java.math.BigDecimal.valueOf(product.currentSalePriceCents(), 2).toPlainString());
+            } else {
+                limpiarCampos();
+                mostrarAlerta("Producto no encontrado", "El producto con código " + codigoIngresado + " no fue encontrado.");
+                return;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -156,13 +145,7 @@ public class BodegaFXMLController implements Initializable {
     }
 
     public boolean esNumeroValido(String texto) {
-        try { //cuando id_productos se parseaba a int
-            //Integer.parseInt(texto);  en vez de Long.parseLong(texto);
-            Long.parseLong(texto);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-          }
+        return texto != null && !texto.isBlank();
     }
     
     @FXML private void accionAñadirACarrito() {
@@ -191,6 +174,16 @@ public class BodegaFXMLController implements Initializable {
         
         btnAñadirCarrito.setDisable(true);
         tfCantidad.setDisable(true);
+    }
+
+    @FXML private void abrirRecepcionCompras() { abrirVentana("/com/mycompany/pepitoapp/view/purchaseReception.fxml", "Recepción de compras", 1100, 780); }
+    @FXML private void abrirRevisionPrecios() { abrirVentana("/com/mycompany/pepitoapp/view/priceReview.fxml", "Revisión de precios", 1200, 760); }
+
+    private void abrirVentana(String resource, String title, double width, double height) {
+        try {
+            Parent root = new FXMLLoader(getClass().getResource(resource)).load();
+            Stage stage = new Stage(); stage.setTitle(title); stage.setScene(new Scene(root, width, height)); stage.show();
+        } catch (IOException ex) { mostrarAlerta("Error", "No se pudo abrir el módulo: " + ex.getMessage()); }
     }
 
 }

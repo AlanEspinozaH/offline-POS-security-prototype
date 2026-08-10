@@ -15,6 +15,8 @@ La intención de este repositorio es **mostrar y sustentar la capa de seguridad*
 
 Este módulo se centra en **integridad, no repudio y cifrado en reposo** para las boletas (comprobantes de venta) generadas por el POS.
 
+El prototipo también incorpora módulos incrementales de compras, proveedores, costos, inventario y pricing. El diseño y guía de uso están en [`docs/PURCHASE_AND_PRICING_DESIGN.md`](docs/PURCHASE_AND_PRICING_DESIGN.md).
+
 ## 2. Alcance de este repositorio
 
 En este repo se busca **demostrar de forma robusta la parte de ciberseguridad**, mostrando un demo del código de un POS (PepitoApp).

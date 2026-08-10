@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.pepitoapp.controller.PurchaseReceptionController" stylesheets="@purchase-pricing.css">
+  <top><VBox spacing="10" styleClass="header"><Label text="RECEPCIÓN DE COMPRA" styleClass="title"/><HBox spacing="10"><Label text="Proveedor:"/><ComboBox fx:id="supplierCombo" prefWidth="300"/><TextField fx:id="newSupplierName" promptText="Nuevo proveedor"/><Button text="Crear proveedor" onAction="#addSupplier"/><Label text="Documento:"/><TextField fx:id="referenceField" prefWidth="130"/><TextField fx:id="notesField" promptText="Notas" HBox.hgrow="ALWAYS"/></HBox></VBox></top>
+  <center><HBox spacing="18" BorderPane.alignment="CENTER"><padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+    <VBox spacing="10" prefWidth="570"><Label text="Escanee producto"/><TextField fx:id="scanField" promptText="Código de barras + Enter" styleClass="scanner"/><Label fx:id="productNameLabel" styleClass="product-name"/><Label fx:id="barcodeLabel"/>
+      <GridPane hgap="12" vgap="9"><columnConstraints><ColumnConstraints minWidth="190"/><ColumnConstraints hgrow="ALWAYS"/></columnConstraints>
+        <Label text="Presentación" GridPane.rowIndex="0"/><TextField fx:id="presentationField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label text="Unidades por caja/pack" GridPane.rowIndex="1"/><TextField fx:id="unitsPerPackField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Cajas pagadas" GridPane.rowIndex="2"/><TextField fx:id="paidPacksField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Cajas bonificadas" GridPane.rowIndex="3"/><TextField fx:id="bonusPacksField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        <Label text="Unidades bonificadas" GridPane.rowIndex="4"/><TextField fx:id="bonusUnitsField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        <Label text="Precio por caja/pack" GridPane.rowIndex="5"/><TextField fx:id="packPriceField" promptText="S/ 60.00" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        <Label text="Descuento monetario" GridPane.rowIndex="6"/><TextField fx:id="discountField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+      </GridPane>
+      <VBox fx:id="unknownPanel" spacing="8" styleClass="unknown"><Label text="PRODUCTO NO REGISTRADO" styleClass="warning-title"/><Label fx:id="unknownBarcodeLabel"/><HBox spacing="8"><TextField fx:id="existingProductField" promptText="Código de producto existente" HBox.hgrow="ALWAYS"/><Button text="Asociar" onAction="#associateUnknown"/></HBox><HBox spacing="8"><TextField fx:id="unknownNameField" promptText="Nombre del producto" HBox.hgrow="ALWAYS"/><TextField fx:id="unknownSalePriceField" promptText="Precio venta" prefWidth="110"/><Button text="Crear" onAction="#createUnknown"/><Button text="Cancelar" onAction="#cancelUnknown"/></HBox></VBox>
+      <Button text="ENTER — AÑADIR LÍNEA" onAction="#addLine" styleClass="primary" maxWidth="Infinity"/>
+    </VBox>
+    <VBox spacing="10" HBox.hgrow="ALWAYS"><GridPane hgap="12" vgap="8" styleClass="summary"><Label text="Total pagado"/><Label fx:id="netAmountLabel" GridPane.columnIndex="1"/><Label text="Unidades recibidas" GridPane.rowIndex="1"/><Label fx:id="receivedUnitsLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/><Label text="Costo efectivo" GridPane.rowIndex="2"/><Label fx:id="effectiveCostLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/><Label text="Último costo" GridPane.rowIndex="3"/><Label fx:id="lastCostLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/><Label text="Precio venta actual" GridPane.rowIndex="4"/><Label fx:id="currentSalePriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/><Label text="Margen bruto estimado" GridPane.rowIndex="5"/><Label fx:id="marginLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/></GridPane><Label text="Líneas de esta compra" styleClass="section-title"/><ListView fx:id="linesList" VBox.vgrow="ALWAYS"/><Button text="Quitar línea seleccionada" onAction="#removeSelectedLine"/><HBox spacing="10"><Label text="TOTAL COMPRA:"/><Label fx:id="purchaseTotalLabel" text="S/ 0" styleClass="total"/></HBox><Button text="CONFIRMAR COMPRA" onAction="#confirmPurchase" styleClass="primary" maxWidth="Infinity"/><Label fx:id="statusLabel" wrapText="true"/></VBox>
+  </HBox></center>
+</BorderPane>

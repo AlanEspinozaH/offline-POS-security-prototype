@@ -14,17 +14,33 @@ public class ProductDatabaseProvider {
 
     private static final String ENVIRONMENT_VARIABLE = "PEPITO_PRODUCTOS_DB";
     private static final Path DEFAULT_DATABASE_PATH = Path.of("local-data", "productos2.db");
+    private final Path configuredDatabasePath;
+
+    public ProductDatabaseProvider() {
+        this.configuredDatabasePath = null;
+    }
+
+    public ProductDatabaseProvider(Path databasePath) {
+        this.configuredDatabasePath = databasePath.toAbsolutePath().normalize();
+    }
 
     public Connection getConnection() throws SQLException {
         Path databasePath = resolveDatabasePath();
-        return DriverManager.getConnection("jdbc:sqlite:" + databasePath);
+        Connection connection = DriverManager.getConnection("jdbc:sqlite:" + databasePath);
+        try (var statement = connection.createStatement()) {
+            statement.execute("PRAGMA foreign_keys = ON");
+            statement.execute("PRAGMA busy_timeout = 5000");
+        }
+        return connection;
     }
 
     public Path resolveDatabasePath() throws SQLException {
         String configuredPath = System.getenv(ENVIRONMENT_VARIABLE);
         Path databasePath;
         try {
-            if (configuredPath != null && !configuredPath.isBlank()) {
+            if (configuredDatabasePath != null) {
+                databasePath = configuredDatabasePath;
+            } else if (configuredPath != null && !configuredPath.isBlank()) {
                 databasePath = Path.of(configuredPath.trim());
             } else {
                 databasePath = Path.of(System.getProperty("user.dir")).resolve(DEFAULT_DATABASE_PATH);

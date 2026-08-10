@@ -1,0 +1,12 @@
+.root { -fx-font-family: "System"; -fx-background-color: #f5f7fb; }
+.header { -fx-padding: 18; -fx-background-color: #173b68; }
+.header .label { -fx-text-fill: white; }
+.title { -fx-font-size: 25px; -fx-font-weight: bold; }
+.scanner { -fx-font-size: 22px; -fx-padding: 10; }
+.product-name { -fx-font-size: 20px; -fx-font-weight: bold; }
+.primary { -fx-background-color: #1769aa; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 11; }
+.summary, .unknown { -fx-background-color: white; -fx-padding: 15; -fx-border-color: #d8dee9; -fx-border-radius: 5; -fx-background-radius: 5; }
+.unknown { -fx-background-color: #fff5e6; -fx-border-color: #f0a000; }
+.warning-title { -fx-font-weight: bold; -fx-text-fill: #9a4f00; }
+.section-title, .total { -fx-font-size: 16px; -fx-font-weight: bold; }
+.table-view { -fx-background-color: white; }

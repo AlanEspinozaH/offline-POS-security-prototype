@@ -21,6 +21,7 @@ public class PepitoApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
+            ApplicationServices.initialize();
             String fxmlPath = "/com/mycompany/pepitoapp/view/bodegaFXML.fxml";
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
@@ -30,7 +31,7 @@ public class PepitoApp extends Application {
             primaryStage.setScene(scene);
             primaryStage.setResizable(true);
             primaryStage.show();
-        } catch (IOException ex) {
+        } catch (IOException | java.sql.SQLException ex) {
             System.err.println("Error al cargar el FXML: " + ex.getMessage());
         }
     }

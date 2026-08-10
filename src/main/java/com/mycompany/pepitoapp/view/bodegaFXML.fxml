@@ -105,6 +105,12 @@
                         <Insets left="60.0" />
                      </VBox.margin>
                   </TextField>
+                  <Button mnemonicParsing="false" onAction="#abrirRecepcionCompras" prefHeight="42.0" prefWidth="250.0" text="Recepción de compras" styleClass="Botones">
+                     <VBox.margin><Insets left="60.0" /></VBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" onAction="#abrirRevisionPrecios" prefHeight="42.0" prefWidth="250.0" text="Revisión de precios" styleClass="Botones">
+                     <VBox.margin><Insets left="60.0" /></VBox.margin>
+                  </Button>
                </children>
                <HBox.margin>
                   <Insets />
